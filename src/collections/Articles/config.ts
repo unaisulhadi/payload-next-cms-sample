@@ -55,5 +55,44 @@ export const Articles: CollectionConfig = {
                 ],
             },
         },
+        {
+            name: 'coverImage',
+            type: 'upload',
+            relationTo: 'media',
+            required: true,
+        },
+        {
+            name: 'author',
+            type: 'relationship',
+            relationTo: 'article-authors',
+            required: true,
+        },
+        {
+            name: 'status',
+            type: 'select',
+            options: [
+                {
+                    label: 'Draft',
+                    value: 'draft',
+                },
+                {
+                    label: 'Published',
+                    value: 'published',
+                },
+            ],
+            defaultValue: 'draft',
+            required: true,
+        },
+        {
+            name: 'publishedAt',
+            type: 'date',
+            required: true,
+            admin: {
+                condition: (data) => data?.status === 'published',
+                date: {
+                    pickerAppearance: 'dayAndTime',
+                },
+            },
+        },
     ],
 }

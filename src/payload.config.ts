@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Articles } from './collections/Articles/config'
+import { ArticleAuthors } from './collections/ArticleAuthors'
 import { env } from './lib/env'
 
 const filename = fileURLToPath(import.meta.url)
@@ -24,7 +25,7 @@ export default buildConfig({
             password: env.CMS_SEED_ADMIN_PASSWORD,
         },
     },
-    collections: [Users, Media, Articles],
+    collections: [Users, Media, Articles, ArticleAuthors],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
     }),
