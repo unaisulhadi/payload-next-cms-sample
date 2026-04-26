@@ -187,6 +187,7 @@ export interface Article {
     [k: string]: unknown;
   };
   contentSummary: string;
+  readTimeInMins?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -317,6 +318,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   slug?: T;
   content?: T;
   contentSummary?: T;
+  readTimeInMins?: T;
   updatedAt?: T;
   createdAt?: T;
 }

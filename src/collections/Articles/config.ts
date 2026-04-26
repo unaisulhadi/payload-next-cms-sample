@@ -1,22 +1,7 @@
-import type { CollectionConfig, FieldHook } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { generateSlugHook } from './hooks/generate-slug-hook'
-import { Article } from '@/payload-types'
+import { generateContentSummaryHook } from './hooks/generate-content-summary-hook'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
-
-const CONTENT_SUMMARY_MAX_LENGTH = 160
-
-const generateContentSummaryHook: FieldHook<Article, String> = ({ value, data }) => {
-    console.log(data?.content)
-    if (value) return value.trim()
-    if (!data?.content) return ''
-    const text = convertLexicalToPlaintext({ data: data?.content }).trim()
-    console.log(text)
-    if (!text) return ''
-    return (
-        text.slice(0, CONTENT_SUMMARY_MAX_LENGTH) +
-        (text.length > CONTENT_SUMMARY_MAX_LENGTH ? '...' : '')
-    )
-}
 
 export const Articles: CollectionConfig = {
     slug: 'articles',
@@ -47,6 +32,27 @@ export const Articles: CollectionConfig = {
             required: true,
             hooks: {
                 beforeValidate: [generateContentSummaryHook],
+            },
+        },
+        {
+            name: 'readTimeInMins',
+            type: 'number',
+            defaultValue: 0,
+            hooks: {
+                beforeChange: [
+                    ({ siblingData }) => {
+                        // data is not stored in db
+                        delete siblingData?.readTimeInMins
+                    },
+                ],
+                afterRead: [
+                    ({ value, siblingData, data }) => {
+                        const text = convertLexicalToPlaintext({ data: data?.content })
+                        const wordsPerMinute = 200
+                        const words = text.split(/\s+/).length
+                        return Math.ceil(words / wordsPerMinute)
+                    },
+                ],
             },
         },
     ],
