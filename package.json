@@ -29,6 +29,7 @@
         "dotenv": "16.4.7",
         "graphql": "^16.8.1",
         "next": "16.2.3",
+        "next-themes": "^0.4.6",
         "payload": "3.84.1",
         "plaiceholder": "^3.0.0",
         "postcss": "^8.5.12",
